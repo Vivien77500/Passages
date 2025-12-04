@@ -370,22 +370,123 @@
       font-weight: 600;
     }
 
-    @media (max-width: 768px) {
+    /* Tablette (768px - 1024px) */
+    @media (max-width: 1024px) and (min-width: 769px) {
       .container {
-        padding: 1.5rem;
+        padding: 2rem;
+        max-width: 750px;
+      }
+
+      .header h1 {
+        font-size: 1.75rem;
+      }
+
+      .calendar-grid {
+        gap: 0.4rem;
+      }
+
+      .day-cell.selected {
+        grid-column: span 2;
+        grid-row: span 2;
+        padding: 0.875rem;
+      }
+
+      .day-cell.selected .day-number {
+        font-size: 1.35rem;
+      }
+
+      .day-task-item {
+        font-size: 0.8rem;
+        padding: 0.65rem;
+      }
+
+      .tasks-header h2 {
+        font-size: 1.35rem;
+      }
+    }
+
+    /* Téléphone (max 768px) */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+
+      .container {
+        padding: 1.25rem;
       }
 
       .header h1 {
         font-size: 1.5rem;
       }
 
+      .calendar-nav {
+        padding: 0.75rem;
+      }
+
+      .calendar-nav button {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.875rem;
+      }
+
+      .current-month {
+        font-size: 1rem;
+      }
+
+      .calendar-grid {
+        gap: 0.3rem;
+      }
+
       .day-header {
-        font-size: 0.75rem;
-        padding: 0.5rem;
+        font-size: 0.7rem;
+        padding: 0.4rem;
+      }
+
+      .day-cell {
+        padding: 0.3rem;
       }
 
       .day-number {
-        font-size: 0.875rem;
+        font-size: 0.8rem;
+      }
+
+      .day-icons {
+        font-size: 0.6rem;
+      }
+
+      /* Case sélectionnée prend toute la largeur sur mobile */
+      .day-cell.selected {
+        grid-column: 1 / -1;
+        grid-row: span 1;
+        padding: 1rem;
+        aspect-ratio: auto;
+        min-height: 200px;
+      }
+
+      .day-cell.selected .day-number {
+        font-size: 1.25rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .day-task-item {
+        font-size: 0.8rem;
+        padding: 0.6rem;
+      }
+
+      .day-task-title {
+        font-size: 0.85rem;
+      }
+
+      .day-task-description {
+        font-size: 0.7rem;
+      }
+
+      .tasks-section {
+        margin-top: 1.5rem;
+        padding-top: 1.5rem;
+      }
+
+      .tasks-header h2 {
+        font-size: 1.25rem;
       }
 
       .add-task-form {
@@ -394,6 +495,87 @@
 
       .add-task-form button {
         width: 100%;
+      }
+
+      .task-item {
+        padding: 0.75rem;
+      }
+
+      .task-text {
+        font-size: 0.9rem;
+      }
+
+      .task-description {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Très petit téléphone (max 480px) */
+    @media (max-width: 480px) {
+      body {
+        padding: 0.5rem;
+      }
+
+      .container {
+        padding: 1rem;
+        border-radius: 16px;
+      }
+
+      .header h1 {
+        font-size: 1.25rem;
+      }
+
+      .calendar-nav {
+        padding: 0.5rem;
+      }
+
+      .calendar-nav button {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.8rem;
+      }
+
+      .current-month {
+        font-size: 0.9rem;
+      }
+
+      .calendar-grid {
+        gap: 0.25rem;
+      }
+
+      .day-header {
+        font-size: 0.65rem;
+        padding: 0.3rem;
+      }
+
+      .day-cell {
+        padding: 0.25rem;
+        border-radius: 8px;
+      }
+
+      .day-number {
+        font-size: 0.75rem;
+      }
+
+      .day-cell.selected {
+        min-height: 180px;
+        padding: 0.875rem;
+      }
+
+      .day-cell.selected .day-number {
+        font-size: 1.1rem;
+      }
+
+      .day-task-item {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+      }
+
+      .tasks-header h2 {
+        font-size: 1.1rem;
+      }
+
+      .task-item {
+        padding: 0.65rem;
       }
     }
   </style>
@@ -451,7 +633,7 @@
       },
       {
         id: 'dechets-verts',
-        title: '🌿 Déchets verts',
+        title: '�� Déchets verts',
         description: 'Du 1er Mars au 31 Déc.',
         type: 'monthly-second-thursday',
         startMonth: 2, // Mars (0-indexed)
@@ -914,5 +1096,5 @@
 
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a869bb2ea015b',t:'MTc2NDg0MzE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a8a297680015b',t:'MTc2NDg0MzI5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
