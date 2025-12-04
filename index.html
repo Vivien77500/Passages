@@ -503,15 +503,58 @@
 
       RECURRING_TASKS.forEach(task => {
         let shouldShow = false;
+        let isReminder = false;
 
         if (task.type === 'weekly') {
           shouldShow = task.days.includes(dayOfWeek);
+          // Vérifier si c'est la veille
+          const tomorrow = new Date(date);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          if (task.days.includes(tomorrow.getDay())) {
+            recurring.push({
+              ...task,
+              title: `${task.icon} Sortie ${task.title.replace(task.icon, '').trim()}`,
+              description: 'Sortie des containers pour demain',
+              isRecurring: true,
+              recurringType: task.type,
+              isReminder: true
+            });
+          }
         } else if (task.type === 'weekly-odd') {
           shouldShow = task.days.includes(dayOfWeek) && isOddWeek(date);
+          // Vérifier si demain est un jour de collecte en semaine impaire
+          const tomorrow = new Date(date);
+          tomorrow.setDate(tomorrow.getDate() + 1);
+          if (task.days.includes(tomorrow.getDay()) && isOddWeek(tomorrow)) {
+            recurring.push({
+              ...task,
+              title: `${task.icon} Sortie ${task.title.replace(task.icon, '').trim()}`,
+              description: 'Sortie des containers pour demain',
+              isRecurring: true,
+              recurringType: task.type,
+              isReminder: true
+            });
+          }
         } else if (task.type === 'monthly-second-thursday') {
           if (month >= task.startMonth && month <= task.endMonth) {
             const secondThursday = getSecondThursdayOfMonth(year, month);
             shouldShow = dayOfMonth === secondThursday;
+            // Vérifier si demain est le deuxième jeudi
+            const tomorrow = new Date(date);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            if (tomorrow.getMonth() >= task.startMonth && tomorrow.getMonth() <= task.endMonth) {
+              const tomorrowSecondThursday = getSecondThursdayOfMonth(tomorrow.getFullYear(), tomorrow.getMonth());
+              if (tomorrow.getDate() === tomorrowSecondThursday) {
+                recurring.push({
+                  ...task,
+                  title: `${task.icon} Sortie ${task.title.replace(task.icon, '').trim()}`,
+                  description: 'Sortie des containers pour demain',
+                  isRecurring: true,
+                  recurringType: task.type,
+                  isReminder: true
+                });
+              }
+            }
           }
         } else if (task.type === 'monthly-day') {
           shouldShow = dayOfMonth === task.dayOfMonth;
@@ -520,6 +563,7 @@
         if (shouldShow) {
           recurring.push({
             ...task,
+            title: `${task.icon} Passage ${task.title.replace(task.icon, '').trim()}`,
             isRecurring: true,
             recurringType: task.type
           });
@@ -839,5 +883,5 @@
 
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a47f0d7a902a8',t:'MTc2NDg0MDU4NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a7e3a118802a8',t:'MTc2NDg0MjgwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
