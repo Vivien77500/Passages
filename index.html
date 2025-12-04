@@ -144,7 +144,19 @@
 
     .day-cell.selected .day-number {
       font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .day-date-full {
+      display: none;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.9);
       margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .day-cell.selected .day-date-full {
+      display: block;
     }
 
     .day-icons {
@@ -464,7 +476,11 @@
 
       .day-cell.selected .day-number {
         font-size: 1.25rem;
-        margin-bottom: 0.5rem;
+        margin-bottom: 0.25rem;
+      }
+
+      .day-date-full {
+        font-size: 0.8rem;
       }
 
       .day-task-item {
@@ -563,6 +579,10 @@
 
       .day-cell.selected .day-number {
         font-size: 1.1rem;
+      }
+
+      .day-date-full {
+        font-size: 0.75rem;
       }
 
       .day-task-item {
@@ -847,6 +867,14 @@
       dayNum.textContent = dayNumber;
       cell.appendChild(dayNum);
 
+      // Ajouter la date complète (visible uniquement quand sélectionnée)
+      const dayOfWeek = DAYS[date.getDay()];
+      const monthName = MONTHS[date.getMonth()];
+      const fullDate = document.createElement('div');
+      fullDate.className = 'day-date-full';
+      fullDate.textContent = `${dayOfWeek} ${dayNumber} ${monthName} ${date.getFullYear()}`;
+      cell.appendChild(fullDate);
+
       const dateStr = formatDate(date);
       const recurringTasks = getRecurringTasksForDate(date);
       
@@ -1096,5 +1124,5 @@
 
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a8a297680015b',t:'MTc2NDg0MzI5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8ccb3cf5f6bb30',t:'MTc2NDg2NjkzMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
