@@ -39,36 +39,10 @@
     }
 
     .header h1 {
-      margin: 0 0 0.5rem 0;
+      margin: 0;
       font-size: 2rem;
       font-weight: 700;
       color: #1a202c;
-    }
-
-    .selected-tasks-display {
-      margin-top: 1rem;
-      padding: 1rem;
-      background: #f7fafc;
-      border-radius: 12px;
-      min-height: 60px;
-      text-align: left;
-    }
-
-    .selected-tasks-display .task-badge {
-      display: inline-block;
-      background: #e6f7ff;
-      border: 2px solid #3b82f6;
-      border-radius: 8px;
-      padding: 0.5rem 1rem;
-      margin: 0.25rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .selected-tasks-display .empty-message {
-      color: #718096;
-      font-style: italic;
-      text-align: center;
     }
 
     .calendar-nav {
@@ -124,13 +98,14 @@
       border-radius: 12px;
       padding: 0.5rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.3s ease;
       background: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       position: relative;
+      overflow: hidden;
     }
 
     .day-cell:hover {
@@ -144,9 +119,16 @@
     }
 
     .day-cell.selected {
-      background: #667eea;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       border-color: #667eea;
       color: white;
+      grid-column: span 2;
+      grid-row: span 2;
+      z-index: 10;
+      aspect-ratio: auto;
+      padding: 1rem;
+      justify-content: flex-start;
+      align-items: flex-start;
     }
 
     .day-cell.today {
@@ -157,6 +139,12 @@
     .day-number {
       font-weight: 600;
       font-size: 1rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .day-cell.selected .day-number {
+      font-size: 1.5rem;
+      margin-bottom: 0.75rem;
     }
 
     .day-icons {
@@ -166,6 +154,43 @@
       margin-top: 0.25rem;
       font-size: 0.7rem;
       justify-content: center;
+    }
+
+    .day-cell.selected .day-icons {
+      display: none;
+    }
+
+    .day-tasks-details {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    .day-cell.selected .day-tasks-details {
+      display: flex;
+    }
+
+    .day-task-item {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 0.75rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      color: #1a202c;
+      text-align: left;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .day-task-title {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .day-task-description {
+      font-size: 0.75rem;
+      color: #4a5568;
+      font-style: italic;
     }
 
     .task-indicator {
@@ -379,7 +404,6 @@
   <main class="container">
    <header class="header">
     <h1 id="calendar-title">Mon Calendrier</h1>
-    <div id="selected-tasks-display" class="selected-tasks-display"></div>
    </header>
    <nav class="calendar-nav"><button id="prev-month" aria-label="Mois précédent">← Précédent</button>
     <div class="current-month" id="current-month"></div><button id="next-month" aria-label="Mois suivant">Suivant →</button>
@@ -655,6 +679,31 @@
         cell.appendChild(iconsContainer);
       }
 
+      // Créer le conteneur des détails des tâches
+      const tasksDetailsContainer = document.createElement('div');
+      tasksDetailsContainer.className = 'day-tasks-details';
+      
+      recurringTasks.forEach(task => {
+        const taskItem = document.createElement('div');
+        taskItem.className = 'day-task-item';
+        
+        const taskTitle = document.createElement('div');
+        taskTitle.className = 'day-task-title';
+        taskTitle.textContent = task.title;
+        taskItem.appendChild(taskTitle);
+        
+        if (task.description) {
+          const taskDesc = document.createElement('div');
+          taskDesc.className = 'day-task-description';
+          taskDesc.textContent = task.description;
+          taskItem.appendChild(taskDesc);
+        }
+        
+        tasksDetailsContainer.appendChild(taskItem);
+      });
+      
+      cell.appendChild(tasksDetailsContainer);
+
       cell.addEventListener('click', () => {
         selectedDate = new Date(date);
         renderCalendar();
@@ -671,24 +720,6 @@
       const titleEl = document.getElementById('selected-date-title');
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       titleEl.textContent = `Tâches du ${selectedDate.toLocaleDateString('fr-FR', options)}`;
-
-      // Afficher les tâches en haut
-      const displayEl = document.getElementById('selected-tasks-display');
-      displayEl.innerHTML = '';
-
-      if (recurringTasks.length > 0) {
-        recurringTasks.forEach(task => {
-          const badge = document.createElement('div');
-          badge.className = 'task-badge';
-          badge.textContent = task.title;
-          displayEl.appendChild(badge);
-        });
-      } else {
-        const empty = document.createElement('div');
-        empty.className = 'empty-message';
-        empty.textContent = 'Aucune collecte prévue ce jour';
-        displayEl.appendChild(empty);
-      }
 
       // Afficher les détails en bas
       const listEl = document.getElementById('tasks-list');
@@ -883,5 +914,5 @@
 
     init();
   </script>
- <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a7e3a118802a8',t:'MTc2NDg0MjgwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9a8a869bb2ea015b',t:'MTc2NDg0MzE1MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
